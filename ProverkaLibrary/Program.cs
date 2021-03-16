@@ -18,7 +18,7 @@ namespace ProverkaLibrary
             array.AddInLast(2);
             array.AddInLast(10);
             array.AddInLast(10);
-
+             // проверкаткаткм
             Console.WriteLine("Весь массив :");
             for (int i = 0; i < array.Lenght; i++)
             {
