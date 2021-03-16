@@ -60,7 +60,7 @@ namespace LibraryList
 
         public void Insert(int index, int value)
         {
-            if (index < Lenght)
+            if (index < Lenght && index >=0)
             {
                 if (Lenght == _array.Length)
                 {
@@ -77,9 +77,7 @@ namespace LibraryList
             }
             else
             {
-
                 throw new IndexOutOfRangeException("Index Out Of Randge ");
-
             }
         }
 
@@ -116,18 +114,14 @@ namespace LibraryList
                 _array[i] = _array[i+1];
             }
                 Lenght--;
-        
         }
-
-
-
+        
         public void RemoveAt(int index)
         {
             if (Lenght <= _array.Length / 2)
             {
                 ReSize(false);
             }
-
 
             for (int i = index; i < Lenght; i++)
             {
@@ -136,7 +130,6 @@ namespace LibraryList
             }
 
             Lenght--;
-
         }
 
         public void RemoveNElementsFromEnd(int nElelements)
@@ -148,15 +141,11 @@ namespace LibraryList
             {
                 ReSize(false);
             }
-
-
         }
 
         public void RemoveNElementsAt(int index, int nElelements)
         {
-
-
-
+            
             for (int i = 0; i < Lenght; i++)
             {
                 _array[i] = _array[i + 1];
@@ -164,7 +153,6 @@ namespace LibraryList
             Lenght--;
         
         }
-
 
         public void RemoveNElementsFromStart(int nElelements)
         {
@@ -179,8 +167,6 @@ namespace LibraryList
             {
                 ReSize(false);
             }
-
-
         }
 
         public void RemoveNElementsInsert(int index, int nElelements)
@@ -231,7 +217,6 @@ namespace LibraryList
             {
                 throw new IndexOutOfRangeException("Index Out Of Randge ");
             }
-
         }
 
         public void ReversArray()
@@ -257,7 +242,6 @@ namespace LibraryList
                 {
                     maxIndexOfElement = i;
                 }
-
             }
 
             return maxIndexOfElement;
@@ -271,7 +255,6 @@ namespace LibraryList
                 {
                     minIndexOfElement = i;
                 }
-
             }
 
             return minIndexOfElement;
@@ -294,14 +277,12 @@ namespace LibraryList
 
         public void RemoveAllElementsByValue(int value)
         {
-
             int indexOfElements = SearchByValue(value);
             while (indexOfElements != -1)
             {
                 RemoveAt(indexOfElements);
                 indexOfElements = SearchByValue(value);
             }
-
         }
 
         private void ReSize(bool isUpOrDoun)
@@ -314,8 +295,7 @@ namespace LibraryList
             }
 
             _array = tempArray;
-        }
-       
+        } 
     }
 }
    
