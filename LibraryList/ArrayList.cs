@@ -60,7 +60,7 @@ namespace LibraryList
 
         public void Insert(int index, int value)
         {
-            if (index < Lenght && index >=0)
+            if (index < Lenght && index >= 0)
             {
                 if (Lenght == _array.Length)
                 {
@@ -83,7 +83,7 @@ namespace LibraryList
 
         public int IndexAccess(int index)
         {
-            if (index < Lenght && index >=0 )
+            if (index < Lenght && index >= 0)
             {
                 return _array[index];
             }
@@ -109,13 +109,13 @@ namespace LibraryList
                 ReSize(false);
             }
 
-           for (int i = 0; i < Lenght; i++)
+            for (int i = 0; i < Lenght; i++)
             {
-                _array[i] = _array[i+1];
+                _array[i] = _array[i + 1];
             }
-                Lenght--;
+            Lenght--;
         }
-        
+
         public void RemoveAt(int index)
         {
             if (Lenght <= _array.Length / 2)
@@ -134,9 +134,9 @@ namespace LibraryList
 
         public void RemoveNElementsFromEnd(int nElelements)
         {
-            
-            Lenght -= Lenght>=nElelements ? nElelements : Lenght;
-            
+
+            Lenght -= Lenght >= nElelements ? nElelements : Lenght;
+
             if (Lenght <= _array.Length / 2)
             {
                 ReSize(false);
@@ -145,13 +145,13 @@ namespace LibraryList
 
         public void RemoveNElementsAt(int index, int nElelements)
         {
-            
+
             for (int i = 0; i < Lenght; i++)
             {
                 _array[i] = _array[i + 1];
             }
             Lenght--;
-        
+
         }
 
         public void RemoveNElementsFromStart(int nElelements)
@@ -163,7 +163,7 @@ namespace LibraryList
                 _array[i] = _array[i + nElelements];
             }
 
-            if (Lenght != 0 &&  Lenght <= _array.Length / 2)
+            if (Lenght != 0 && Lenght <= _array.Length / 2)
             {
                 ReSize(false);
             }
@@ -171,7 +171,7 @@ namespace LibraryList
 
         public void RemoveNElementsInsert(int index, int nElelements)
         {
-            if(Lenght - index >= nElelements)
+            if (Lenght - index >= nElelements)
             {
                 Lenght -= nElelements;
 
@@ -223,11 +223,11 @@ namespace LibraryList
         {
             int temp;
             int swapIndex;
-            for (int i = 0; i < Lenght/2; i++)
+            for (int i = 0; i < Lenght / 2; i++)
             {
                 swapIndex = Lenght - i - 1;
                 temp = _array[i];
-                
+
                 _array[i] = _array[swapIndex];
                 _array[swapIndex] = temp;
             }
@@ -295,8 +295,8 @@ namespace LibraryList
             }
 
             _array = tempArray;
-        } 
+        }
     }
 }
-   
+
 
