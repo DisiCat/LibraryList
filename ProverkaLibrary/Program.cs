@@ -8,53 +8,34 @@ namespace ProverkaLibrary
         static void Main(string[] args)
         {
             ArrayList array = new ArrayList();
-            //array.Add(1);
-            //Console.WriteLine(array.IndexAccess(0));
-            //array.AddInStart(11);
-            //Console.WriteLine(array.IndexAccess(0));
-            //array.Insert(0, 5);
-            //Console.WriteLine(array.IndexAccess(0));
-            //array.Insert(1, 40);
-            //Console.WriteLine(array.IndexAccess(1));
-            //Console.WriteLine("ВЕсь массив :");
-            //for (int i = 0; i < array.Lenght; i++)
-            //{
-            //    Console.WriteLine(array.IndexAccess(i));
-            //}
 
-            //array.RemoveLast();
+            array.AddInLast(10);
+            array.AddInLast(2);
+            array.AddInLast(3);
+            array.AddInLast(4);
+            array.AddInLast(5);
+            array.AddInLast(10);
+            array.AddInLast(2);
+            array.AddInLast(10);
+            array.AddInLast(10);
 
-            //Console.WriteLine("ВЕсь массив :");
-            //for (int i = 0; i < array.Lenght; i++)
-            //{
-            //    Console.WriteLine(array.IndexAccess(i));
-            //}
-
-            //array.RemoveFirst();
-            //Console.WriteLine("ВЕсь массив :");
-            //for (int i = 0; i < array.Lenght; i++)
-            //{
-            //    Console.WriteLine(array.IndexAccess(i));
-            //}
-            array.Add(1);
-            array.Add(2);
-            array.Add(3);
-            array.Add(4);
-            array.Add(5);
-            array.Add(6);
-            Console.WriteLine("ВЕсь массив :");
+            Console.WriteLine("Весь массив :");
             for (int i = 0; i < array.Lenght; i++)
             {
-                Console.WriteLine(array.IndexAccess(i));
+                Console.Write(array.IndexAccess(i) + " ");
             }
-            array.RemoveNElementsAt(1,6);
-            Console.WriteLine("ВЕсь массив :");
+            Console.WriteLine(" len = " + array.Lenght);
+            array.RemoveAllElementsByValue(10);
+        
+            Console.WriteLine("Весь массив :");
             for (int i = 0; i < array.Lenght; i++)
             {
-                Console.WriteLine(array.IndexAccess(i));
+                Console.Write(array.IndexAccess(i) + " ");
             }
-            Console.Write("Че? ");
+            Console.WriteLine(" len = " + array.Lenght);
+
         }
+
     }
 }
 

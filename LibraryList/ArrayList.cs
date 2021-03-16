@@ -13,40 +13,47 @@ namespace LibraryList
             Lenght = 0;
             _array = new int[10];
         }
-
-        public void Add(int value)
+        public ArrayList(int el)
         {
-            if (Lenght == _array.Length) {
-                UpSize();
+            Lenght = 1;
+            _array = new int[10];
+            _array[0] = el;
+        }
+
+        public ArrayList(int[] initArray)
+        {
+            Lenght = 0;
+            _array = new int[initArray.Length];
+            for (int i = 0; i < initArray.Length; i++)
+            {
+                AddInLast(initArray[i]);
+            }
+        }
+
+        public void AddInLast(int value)
+        {
+            if (Lenght >= _array.Length)
+            {
+                ReSize(true);
             }
             _array[Lenght] = value;
+
             Lenght++;
         }
 
         public void AddInStart(int value)
         {
-            if (Lenght != 0)
+
+            if (Lenght == _array.Length)
             {
-                if (Lenght == _array.Length)
-                {
-                    UpSize();
-                }
-
-                int[] tempArray = new int[_array.Length + 1];
-                tempArray[0] = value;
-                int j = 0;
-                for (int i = 0; i < _array.Length; i++)
-                {
-                    tempArray[++j] = _array[i];
-                }
-
-                _array = tempArray;
-
+                ReSize(true);
             }
-            else
+
+            for (int i = Lenght; i >= 0; --i)
             {
-                _array[0] = value;
+                _array[i + 1] = _array[i];
             }
+            _array[0] = value;
 
             Lenght++;
         }
@@ -57,34 +64,28 @@ namespace LibraryList
             {
                 if (Lenght == _array.Length)
                 {
-                    UpSize();
+                    ReSize(true);
                 }
 
-                int[] tempArray = new int[_array.Length + 1];
-                int j = 0;
-                for (int i = 0; i < _array.Length; i++)
+                for (int i = Lenght; i >= index; i--)
                 {
-                    if (i == index)
-                    {
-                        tempArray[j++] = value;
-                    }
-                    tempArray[j++] = _array[i];
+                    _array[i + 1] = _array[i];
                 }
 
-                _array = tempArray;
+                _array[index] = value;
                 Lenght++;
             }
             else
             {
 
-            throw new IndexOutOfRangeException("Index Out Of Randge ");
+                throw new IndexOutOfRangeException("Index Out Of Randge ");
 
             }
         }
 
         public int IndexAccess(int index)
         {
-            if(index < Lenght)
+            if (index < Lenght && index >=0 )
             {
                 return _array[index];
             }
@@ -93,167 +94,228 @@ namespace LibraryList
         }
 
         public void RemoveLast()
-        {   if (Lenght != 0) { 
-            int newLength = _array.Length - 1;
+        {
             if (Lenght < _array.Length / 2)
             {
-                newLength = (int)(_array.Length / 1.33d + 1);
+                ReSize(false);
             }
 
-            int[] tempArray = new int[newLength];
-            for (int i = 0; i < tempArray.Length; i++)
-            {
-                tempArray[i] = _array[i];
-            }
-
-            _array = tempArray;
             Lenght--;
-            } else
-            {
-                throw new Exception("Array pustoi");
-            }
+
         }
 
         public void RemoveFirst()
         {
-            if (Lenght != 0)
+            if (Lenght < _array.Length / 2)
             {
-                int newLength = _array.Length - 1;
-                if (Lenght < _array.Length / 2)
-                {
-                    newLength = (int)(_array.Length / 1.33d + 1);
-                }
-
-                int[] tempArray = new int[newLength];
-
-                int j = 0;
-                for (int i = 1; i < tempArray.Length; i++)
-                {
-                    tempArray[j++] = _array[i];
-                }
-
-                _array = tempArray;
-                Lenght--;
-            } else
-            {
-                throw new Exception("Array pustoi");
+                ReSize(false);
             }
+
+           for (int i = 0; i < Lenght; i++)
+            {
+                _array[i] = _array[i+1];
+            }
+                Lenght--;
+        
         }
+
+
 
         public void RemoveAt(int index)
         {
-            if (Lenght != 0)
+            if (Lenght <= _array.Length / 2)
             {
-                int newLength = _array.Length - 1;
-                if (Lenght < _array.Length / 2)
-                {
-                    newLength = (int)(_array.Length / 1.33d + 1);
-                }
-
-                int[] tempArray = new int[newLength];
-
-                int j = 0;
-                for (int i = 0; i < tempArray.Length; i++)
-                {
-
-                    if (i != index)
-                    {
-                        tempArray[j++] = _array[i];
-                    }
-                }
-
-                _array = tempArray;
-                Lenght--;
+                ReSize(false);
             }
-            else
+
+
+            for (int i = index; i < Lenght; i++)
             {
-                throw new Exception("Array pustoi");
+                _array[i] = _array[i + 1];
+
             }
+
+            Lenght--;
+
         }
-        
+
         public void RemoveNElementsFromEnd(int nElelements)
         {
-            if (Lenght != 0)
+            
+            Lenght -= Lenght>=nElelements ? nElelements : Lenght;
+            
+            if (Lenght <= _array.Length / 2)
             {
-                int newLength = Lenght - nElelements;
-                
-                int[] tempArray = new int[newLength];
-                for (int i = 0; i < tempArray.Length; i++)
-                {
-                    tempArray[i] = _array[i];
-                }
+                ReSize(false);
+            }
 
-                _array = tempArray;
-                Lenght-= nElelements;
-            }
-            else
-            {
-                throw new Exception("Array pustoi");
-            }
+
         }
 
         public void RemoveNElementsAt(int index, int nElelements)
         {
-            if (Lenght >= (nElelements + index))
+
+
+
+            for (int i = 0; i < Lenght; i++)
             {
-                int newLength = Lenght - nElelements;
-                int SwapValue = nElelements;
-                int[] tempArray = new int[newLength];
-
-                int j = 0;
-                for (int i = 0; i < tempArray.Length; i++)
-                {
-
-                    if (i != index)
-                    {
-                        tempArray[i] = _array[j++];
-                    }
-                    else
-                    {
-                        j += SwapValue;
-                        tempArray[i] = _array[j++];
-                    }
-                }
-
-                _array = tempArray;
-                Lenght -= nElelements;
+                _array[i] = _array[i + 1];
             }
-            else
-            {
-                throw new Exception("Array pustoi");
-            }
+            Lenght--;
+        
         }
+
+
         public void RemoveNElementsFromStart(int nElelements)
         {
-            if (Lenght >= nElelements)
+            Lenght -= Lenght >= nElelements ? nElelements : Lenght;
+
+            for (int i = 0; i < Lenght; i++)
             {
-                int newLength = Lenght - nElelements;
-                int SwapValue = nElelements;
-                int[] tempArray = new int[newLength];
-                for (int i = 0; i < tempArray.Length; i++)
+                _array[i] = _array[i + nElelements];
+            }
+
+            if (Lenght != 0 &&  Lenght <= _array.Length / 2)
+            {
+                ReSize(false);
+            }
+
+
+        }
+
+        public void RemoveNElementsInsert(int index, int nElelements)
+        {
+            if(Lenght - index >= nElelements)
+            {
+                Lenght -= nElelements;
+
+                for (int i = index; i < Lenght; i++)
                 {
-                    tempArray[i] = _array[SwapValue++];
+                    _array[i] = _array[i + nElelements];
                 }
 
-                _array = tempArray;
-                Lenght -= nElelements;
             }
             else
             {
-                throw new Exception("Array pustoi");
+                Lenght = index;
+            }
+
+            //if (Lenght != 0 && Lenght <= _array.Length / 2) ПОД ВОПРОСОМ??????
+            //{
+            //    ReSize(false);
+            //}
+        }
+
+        public int SearchByValue(int value)
+        {
+
+            for (int i = 0; i < Lenght; i++)
+            {
+                if (value == _array[i])
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        public void ChangeByIndex(int index, int value)
+        {
+            if (index < Lenght && index >= 0)
+            {
+
+                _array[index] = value;
+            }
+            else
+            {
+                throw new IndexOutOfRangeException("Index Out Of Randge ");
+            }
+
+        }
+
+        public void ReversArray()
+        {
+            int temp;
+            int swapIndex;
+            for (int i = 0; i < Lenght/2; i++)
+            {
+                swapIndex = Lenght - i - 1;
+                temp = _array[i];
+                
+                _array[i] = _array[swapIndex];
+                _array[swapIndex] = temp;
             }
         }
-        private void UpSize()
+
+        public int MaxIndexOfElement()
         {
-            int newLength = (int)(_array.Length * 1.33d + 1);
+            int maxIndexOfElement = 0;
+            for (int i = 1; i < Lenght; i++)
+            {
+                if (_array[maxIndexOfElement] < _array[i])
+                {
+                    maxIndexOfElement = i;
+                }
+
+            }
+
+            return maxIndexOfElement;
+        }
+        public int MinIndexOfElement()
+        {
+            int minIndexOfElement = 0;
+            for (int i = 1; i < Lenght; i++)
+            {
+                if (_array[minIndexOfElement] > _array[i])
+                {
+                    minIndexOfElement = i;
+                }
+
+            }
+
+            return minIndexOfElement;
+        }
+
+        public int MaxElement()
+        {
+            return _array[MaxIndexOfElement()];
+        }
+
+        public int MinElement()
+        {
+            return _array[MinIndexOfElement()];
+        }
+
+        public void RemoveFirstElementByValue(int value)
+        {
+            RemoveAt(SearchByValue(value));
+        }
+
+        public void RemoveAllElementsByValue(int value)
+        {
+
+            int indexOfElements = SearchByValue(value);
+            while (indexOfElements != -1)
+            {
+                RemoveAt(indexOfElements);
+                indexOfElements = SearchByValue(value);
+            }
+
+        }
+
+        private void ReSize(bool isUpOrDoun)
+        {
+            int newLength = isUpOrDoun ? (int)(_array.Length * 1.33d + 1) : (int)(_array.Length / 1.33d + 1);
             int[] tempArray = new int[newLength];
-            for (int i = 0; i < _array.Length; i++)
+            for (int i = 0; i < Lenght; i++)
             {
                 tempArray[i] = _array[i];
             }
 
             _array = tempArray;
         }
+       
     }
 }
    
