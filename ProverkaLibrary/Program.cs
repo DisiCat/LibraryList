@@ -18,7 +18,6 @@ namespace ProverkaLibrary
             array.AddInLast(2);
             array.AddInLast(10);
             array.AddInLast(10);
-             /// Я ВСЕ ИСПРАВЫИЛ Я МОЛОДЕЦ Ы
             Console.WriteLine("Весь массив :");
             for (int i = 0; i < array.Lenght; i++)
             {
