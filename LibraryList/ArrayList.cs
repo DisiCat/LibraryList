@@ -4,76 +4,94 @@ namespace LibraryList
 {
     public class ArrayList
     {
-        public int Lenght { get; private set; }
+
+        public int Length { get; private set; }
 
         private int[] _array;
 
         public ArrayList()
         {
-            Lenght = 0;
+            Length = 0;
             _array = new int[10];
         }
+
         public ArrayList(int el)
-        {
-            Lenght = 1;
+        {  
+            Length = 0;
             _array = new int[10];
-            _array[0] = el;
+
+            AddFirst(el);
         }
 
         public ArrayList(int[] initArray)
-        {
-            Lenght = 0;
+        { if( !(initArray == null))
+            {
+
+            Length = 0;
             _array = new int[initArray.Length];
+
             for (int i = 0; i < initArray.Length; i++)
             {
-                AddInLast(initArray[i]);
+                AddLast(initArray[i]);
+            }
+            }
+            else
+            {
+                throw new ArgumentException("Ti she duurak? kuda null pihaech?");
             }
         }
 
-        public void AddInLast(int value)
+        public int this[int index]
         {
-            if (Lenght >= _array.Length)
-            {
-                ReSize(true);
-            }
-            _array[Lenght] = value;
+            get { return _array[index]; }
 
-            Lenght++;
+            set
+            {
+                if (!(index >= Length || index <= 0))
+                {
+                    _array[index] = value;
+                }
+                else
+                {
+                    throw new IndexOutOfRangeException(" Index out of range");
+                }
+            }
+        }
+    
+        public void AddLast(int value)
+        {
+            if (!(Length < _array.Length))
+            {
+                Resize((int)(_array.Length * 1.33d + 1));
+            }
+
+            _array[Length++] = value;
         }
 
-        public void AddInStart(int value)
+        public void AddFirst(int value)
         {
-
-            if (Lenght == _array.Length)
+            if (!(Length < _array.Length))
             {
-                ReSize(true);
+                Resize((int)(_array.Length * 1.33d + 1));
             }
 
-            for (int i = Lenght; i >= 0; --i)
-            {
-                _array[i + 1] = _array[i];
-            }
+            Shift(Length, 0);
+
             _array[0] = value;
-
-            Lenght++;
         }
 
-        public void Insert(int index, int value)
+        public void AddByIndex(int index, int value)
         {
-            if (index < Lenght && index >= 0)
+            if (index >= 0 && index <= Length)
             {
-                if (Lenght == _array.Length)
+                if (!(Length < _array.Length))
                 {
-                    ReSize(true);
+                    Resize((int)(_array.Length * 1.33d + 1));
                 }
 
-                for (int i = Lenght; i >= index; i--)
-                {
-                    _array[i + 1] = _array[i];
-                }
-
-                _array[index] = value;
-                Lenght++;
+                    Shift(Length, index);
+                    _array[index] = value;
+                
             }
             else
             {
@@ -81,121 +99,107 @@ namespace LibraryList
             }
         }
 
-        public int IndexAccess(int index)
-        {
-            if (index < Lenght && index >= 0)
-            {
-                return _array[index];
-            }
-
-            throw new IndexOutOfRangeException("Index Out Of Randge ");
-        }
-
         public void RemoveLast()
         {
-            if (Lenght < _array.Length / 2)
+            if (Length < _array.Length / 2)
             {
-                ReSize(false);
+                Resize((int)(Length * 1.33d + 1));
             }
 
-            Lenght--;
-
+            if (!(Length == 0))
+            {
+                Length--;
+            }
         }
 
         public void RemoveFirst()
         {
-            if (Lenght < _array.Length / 2)
+            if (!(Length >= _array.Length / 2))
             {
-                ReSize(false);
+                Resize((int)(Length * 1.33d + 1));
             }
 
-            for (int i = 0; i < Lenght; i++)
+            if (!(Length == 0))
             {
-                _array[i] = _array[i + 1];
-            }
-            Lenght--;
-        }
-
-        public void RemoveAt(int index)
-        {
-            if (Lenght <= _array.Length / 2)
-            {
-                ReSize(false);
-            }
-
-            for (int i = index; i < Lenght; i++)
-            {
-                _array[i] = _array[i + 1];
-
-            }
-
-            Lenght--;
-        }
-
-        public void RemoveNElementsFromEnd(int nElelements)
-        {
-
-            Lenght -= Lenght >= nElelements ? nElelements : Lenght;
-
-            if (Lenght <= _array.Length / 2)
-            {
-                ReSize(false);
+                Shift(Length, 0, 1 );
             }
         }
 
-        public void RemoveNElementsAt(int index, int nElelements)
+        public void RemoveByIndex(int index)
         {
-
-            for (int i = 0; i < Lenght; i++)
+            if (!(index < 0 || index > Length))
             {
-                _array[i] = _array[i + 1];
-            }
-            Lenght--;
-
-        }
-
-        public void RemoveNElementsFromStart(int nElelements)
-        {
-            Lenght -= Lenght >= nElelements ? nElelements : Lenght;
-
-            for (int i = 0; i < Lenght; i++)
-            {
-                _array[i] = _array[i + nElelements];
-            }
-
-            if (Lenght != 0 && Lenght <= _array.Length / 2)
-            {
-                ReSize(false);
-            }
-        }
-
-        public void RemoveNElementsInsert(int index, int nElelements)
-        {
-            if (Lenght - index >= nElelements)
-            {
-                Lenght -= nElelements;
-
-                for (int i = index; i < Lenght; i++)
+                if (!(Length > _array.Length / 2))
                 {
-                    _array[i] = _array[i + nElelements];
+                    Resize((int)(Length * 1.33d + 1));
                 }
+
+                if (!(Length == 0))
+                {
+                    Shift(Length, index, 1);
+                }
+            }
+            else
+            {
+                throw new IndexOutOfRangeException("Index Out Of Randge ");
+            }
+        }
+
+        public void RemoveLast(int nElelements)
+        {
+            if (Length >= nElelements)
+            {
+                Length -= nElelements;
+            }
+            else
+            {
+                Length = 0;
+            }
+
+            if (!(Length > _array.Length / 2))
+            {
+                Resize((int)(Length * 1.33d + 1));
+            }
+        }
+
+        public void RemoveFirst(int nElelements)
+        {
+            if (!(Length <= nElelements))
+            {
+                Shift(Length, 0, nElelements);
+            }
+            else
+            {
+                Length = 0;
+            }
+          
+            if (!(Length >= _array.Length / 2))
+            {
+                Resize((int)(Length * 1.33d + 1));
+            }
+        }
+
+        public void RemoveByIndex(int index, int nElelements)
+        {
+            if (Length - index >= nElelements)
+            {
+                Shift(Length, index, nElelements);
 
             }
             else
             {
-                Lenght = index;
+                Length = index;
             }
 
-            //if (Lenght != 0 && Lenght <= _array.Length / 2) ПОД ВОПРОСОМ??????
-            //{
-            //    ReSize(false);
-            //}
+            if (!(Length >= _array.Length / 2))
+            {
+                Resize((int)(Length * 1.33d + 1));
+            }
         }
 
-        public int SearchByValue(int value)
+        public int GetIndexByValue(int value)
         {
-
-            for (int i = 0; i < Lenght; i++)
+            for (int i = 0; i < Length; i++)
             {
                 if (value == _array[i])
                 {
@@ -206,26 +210,13 @@ namespace LibraryList
             return -1;
         }
 
-        public void ChangeByIndex(int index, int value)
-        {
-            if (index < Lenght && index >= 0)
-            {
-
-                _array[index] = value;
-            }
-            else
-            {
-                throw new IndexOutOfRangeException("Index Out Of Randge ");
-            }
-        }
-
-        public void ReversArray()
+        public void Revers()
         {
             int temp;
             int swapIndex;
-            for (int i = 0; i < Lenght / 2; i++)
+            for (int i = 0; i < Length / 2; i++)
             {
-                swapIndex = Lenght - i - 1;
+                swapIndex = Length - i - 1;
                 temp = _array[i];
 
                 _array[i] = _array[swapIndex];
@@ -233,10 +224,11 @@ namespace LibraryList
             }
         }
 
-        public int MaxIndexOfElement()
+        public int FindMaxIndex()
         {
             int maxIndexOfElement = 0;
-            for (int i = 1; i < Lenght; i++)
+
+            for (int i = 1; i < Length; i++)
             {
                 if (_array[maxIndexOfElement] < _array[i])
                 {
@@ -246,10 +238,12 @@ namespace LibraryList
 
             return maxIndexOfElement;
         }
-        public int MinIndexOfElement()
+
+        public int FindMinIndex()
         {
             int minIndexOfElement = 0;
-            for (int i = 1; i < Lenght; i++)
+
+            for (int i = 1; i < Length; i++)
             {
                 if (_array[minIndexOfElement] > _array[i])
                 {
@@ -260,41 +254,83 @@ namespace LibraryList
             return minIndexOfElement;
         }
 
-        public int MaxElement()
+        public int FindMaxElement()
         {
-            return _array[MaxIndexOfElement()];
+            return _array[FindMaxIndex()];
         }
 
-        public int MinElement()
+        public int FindMinElement()
         {
-            return _array[MinIndexOfElement()];
+            return _array[FindMinIndex()];
         }
 
-        public void RemoveFirstElementByValue(int value)
+        public void RemoveByValue(int value)
         {
-            RemoveAt(SearchByValue(value));
+            RemoveByIndex(GetIndexByValue(value));
         }
 
-        public void RemoveAllElementsByValue(int value)
+        public void RemoveAllByValue(int value)
         {
-            int indexOfElements = SearchByValue(value);
+            int indexOfElements = GetIndexByValue(value);
             while (indexOfElements != -1)
             {
-                RemoveAt(indexOfElements);
-                indexOfElements = SearchByValue(value);
+                RemoveByIndex(indexOfElements);
+                indexOfElements = GetIndexByValue(value);
             }
         }
 
-        private void ReSize(bool isUpOrDoun)
+        private void Resize( int newLength)
         {
-            int newLength = isUpOrDoun ? (int)(_array.Length * 1.33d + 1) : (int)(_array.Length / 1.33d + 1);
             int[] tempArray = new int[newLength];
-            for (int i = 0; i < Lenght; i++)
+
+            for (int i = 0; i < Length; i++)
             {
                 tempArray[i] = _array[i];
             }
 
             _array = tempArray;
+        }
+
+        //shift to the right ------->
+        private void Shift( int lenght,int index) {
+           
+            for (int i = lenght-1; i >= index; i--)
+            {
+                _array[i + 1] = _array[i];
+            }
+
+            Length++;
+        }
+
+        // left shift    <-------
+        private void Shift(int lenght, int index, int nElements)
+        {
+
+            for (int i = index; i < lenght-1; i++)
+            {
+                _array[i] = _array[i + nElements];
+            }
+
+            Length-= nElements;
+        }
+
+        public override bool Equals(object obj)
+        {
+            ArrayList list = (ArrayList)obj;
+            if (this.Length != list.Length)
+            {
+
+                return false;
+            }
+         
+            for (int i = 0; i < Length; i++)
+            {
+                if (this._array[i] != list._array[i]) {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

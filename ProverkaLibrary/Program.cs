@@ -7,33 +7,12 @@ namespace ProverkaLibrary
     {
         static void Main(string[] args)
         {
-            ArrayList array = new ArrayList();
 
-            array.AddInLast(10);
-            array.AddInLast(2);
-            array.AddInLast(3);
-            array.AddInLast(4);
-            array.AddInLast(5);
-            array.AddInLast(10);
-            array.AddInLast(2);
-            array.AddInLast(10);
-            array.AddInLast(10);
-            Console.WriteLine("Весь массив :");
-            for (int i = 0; i < array.Lenght; i++)
-            {
-                Console.Write(array.IndexAccess(i) + " ");
-            }
-            Console.WriteLine(" len = " + array.Lenght);
-            array.RemoveAllElementsByValue(10);
-        
-            Console.WriteLine("Весь массив :");
-            for (int i = 0; i < array.Lenght; i++)
-            {
-                Console.Write(array.IndexAccess(i) + " ");
-            }
-            Console.WriteLine(" len = " + array.Lenght);
-
-        }
+            ArrayList List = new ArrayList( new int[] {1,2,3,4,5 } );
+            Console.Write(List[112] = 5);
+            
+         
+        } 
 
     }
 }
