@@ -8,11 +8,18 @@ namespace ProverkaLibrary
         static void Main(string[] args)
         {
 
-            ArrayList List = new ArrayList( new int[] {1,2,3,4,5 } );
-            Console.Write(List[112] = 5);
+            ArrayList List = new ArrayList();
+            Console.WriteLine(List.Length);
+            List.AddLast(10);
+            List.AddLast(10);
+            List.AddLast(10);
+            Console.WriteLine(List[0] = 99);
+            List.RemoveFirst(2);
+            Console.WriteLine(List.Length);
+
             
-         
-        } 
+
+        }
 
     }
 }

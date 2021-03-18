@@ -60,38 +60,33 @@ namespace LibraryList
     
         public void AddLast(int value)
         {
-            if (!(Length < _array.Length))
-            {
-                Resize((int)(_array.Length * 1.33d + 1));
-            }
+                Resize();
 
             _array[Length++] = value;
         }
 
         public void AddFirst(int value)
         {
-            if (!(Length < _array.Length))
-            {
-                Resize((int)(_array.Length * 1.33d + 1));
-            }
+            Resize();
 
-            Shift(Length, 0);
-
+            ShiftRight(0, 1);
+         
             _array[0] = value;
+            Length++;
         }
 
         public void AddByIndex(int index, int value)
         {
-            if (index >= 0 && index <= Length)
+            if (index >= 0 && index < Length)
             {
-                if (!(Length < _array.Length))
-                {
-                    Resize((int)(_array.Length * 1.33d + 1));
-                }
 
-                    Shift(Length, index);
-                    _array[index] = value;
-                
+                Resize();
+
+
+                ShiftRight(index, 1);
+                _array[index] = value;
+                Length++;
+
             }
             else
             {
@@ -101,43 +96,36 @@ namespace LibraryList
 
         public void RemoveLast()
         {
-            if (Length < _array.Length / 2)
-            {
-                Resize((int)(Length * 1.33d + 1));
-            }
-
             if (!(Length == 0))
             {
                 Length--;
             }
+
+            Resize();
         }
 
         public void RemoveFirst()
         {
-            if (!(Length >= _array.Length / 2))
-            {
-                Resize((int)(Length * 1.33d + 1));
-            }
-
             if (!(Length == 0))
             {
-                Shift(Length, 0, 1 );
+                Length--;
+                ShiftLeft(0, 1 );
             }
+
+            Resize();
         }
 
         public void RemoveByIndex(int index)
         {
-            if (!(index < 0 || index > Length))
+            if (index >= 0 && index < Length)
             {
-                if (!(Length > _array.Length / 2))
-                {
-                    Resize((int)(Length * 1.33d + 1));
-                }
-
                 if (!(Length == 0))
                 {
-                    Shift(Length, index, 1);
+                    Length--;
+                    ShiftLeft(index, 1);
                 }
+
+                Resize();
             }
             else
             {
@@ -147,54 +135,54 @@ namespace LibraryList
 
         public void RemoveLast(int nElelements)
         {
-            if (Length >= nElelements)
+            if (Length >= nElelements )
             {
+                if(nElelements >= 0)
+                {
+
                 Length -= nElelements;
+                }
             }
             else
             {
                 Length = 0;
             }
 
-            if (!(Length > _array.Length / 2))
-            {
-                Resize((int)(Length * 1.33d + 1));
-            }
+                Resize();
+            
         }
 
         public void RemoveFirst(int nElelements)
         {
             if (!(Length <= nElelements))
             {
-                Shift(Length, 0, nElelements);
+                if (nElelements >= 0)
+                {
+                    Length -= nElelements;
+                    ShiftLeft(0, nElelements);
+                }
             }
             else
             {
                 Length = 0;
             }
           
-            if (!(Length >= _array.Length / 2))
-            {
-                Resize((int)(Length * 1.33d + 1));
-            }
+                Resize();
         }
 
         public void RemoveByIndex(int index, int nElelements)
         {
             if (Length - index >= nElelements)
             {
-                Shift(Length, index, nElelements);
-
+                Length -= nElelements;
+                ShiftLeft( index, nElelements);
             }
             else
             {
                 Length = index;
             }
 
-            if (!(Length >= _array.Length / 2))
-            {
-                Resize((int)(Length * 1.33d + 1));
-            }
+                Resize();
         }
 
         public int GetIndexByValue(int value)
@@ -279,42 +267,46 @@ namespace LibraryList
             }
         }
 
-        private void Resize( int newLength)
+        private void Resize()
         {
-            int[] tempArray = new int[newLength];
-
-            for (int i = 0; i < Length; i++)
+            if ((Length >= _array.Length) || (Length <= _array.Length / 2))
             {
-                tempArray[i] = _array[i];
-            }
+              int  newLength = (int)(Length * 1.33d + 1);
+                int[] tempArray = new int[newLength];
 
-            _array = tempArray;
+                for (int i = 0; i < Length; i++)
+                {
+                    tempArray[i] = _array[i];
+                }
+
+                _array = tempArray;
+            }
         }
 
         //shift to the right ------->
-        private void Shift( int lenght,int index) {
-           
-            for (int i = lenght-1; i >= index; i--)
-            {
-                _array[i + 1] = _array[i];
-            }
+        private void ShiftRight(int index, int nElements) {
 
-            Length++;
+            for (int i = Length - 1; i >= index; i--)
+            {
+                _array[i + nElements] = _array[i];
+
+            }
         }
 
         // left shift    <-------
-        private void Shift(int lenght, int index, int nElements)
+        private void ShiftLeft(int index, int nElements)
         {
-
-            for (int i = index; i < lenght-1; i++)
+          
+            for (int i = index; i < Length; i++)
             {
                 _array[i] = _array[i + nElements];
             }
 
-            Length-= nElements;
         }
 
-        public override bool Equals(object obj)
+
+       
+    public override bool Equals(object obj)
         {
             ArrayList list = (ArrayList)obj;
             if (this.Length != list.Length)
