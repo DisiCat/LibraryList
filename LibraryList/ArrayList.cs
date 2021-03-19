@@ -9,6 +9,7 @@ namespace LibraryList
 
         private int[] _array;
 
+        private const int indexZero = 0;
         public ArrayList()
         {
             Length = 0;
@@ -16,7 +17,7 @@ namespace LibraryList
         }
 
         public ArrayList(int el)
-        {  
+        {
             Length = 0;
             _array = new int[10];
 
@@ -60,10 +61,10 @@ namespace LibraryList
                 }
             }
         }
-    
+
         public void AddLast(int value)
         {
-                Resize(Length);
+            Resize(Length);
 
             _array[Length++] = value;
         }
@@ -74,7 +75,7 @@ namespace LibraryList
             Length += list.Length;
 
             Resize(oldLength);
-            
+
             for (int i = 0; i < list.Length; ++i)
             {
                 _array[oldLength + i] = list[i];
@@ -83,36 +84,21 @@ namespace LibraryList
 
         public void AddFirst(int value)
         {
-            Resize(Length);
-
-            Length++;
-            ShiftRight(0, 1);
-         
-            _array[0] = value;
+            AddByIndex(indexZero, value);
         }
 
         public void AddFirst(ArrayList list)
         {
-            int oldLength = Length;
-            Length += list.Length;
-
-            Resize(oldLength);
-            
-            ShiftRight(list.Length - 1, list.Length);
-
-            for (int i = 0; i < list.Length; ++i)
-            {
-                _array[i] = list[i];
-            }
+            AddByIndex(indexZero, list);
         }
 
         public void AddByIndex(int index, int value)
         {
-            if (index >= 0 && index < Length)
+            if ((index == 0 && Length == 0) || (index < Length && index >= 0))
             {
                 Resize(Length);
-
                 Length++;
+
                 ShiftRight(index, 1);
 
                 _array[index] = value;
@@ -125,14 +111,14 @@ namespace LibraryList
 
         public void AddByIndex(int index, ArrayList list)
         {
-            if (index < Length && index >= 0)
+            if ((index == 0 && Length == 0) || (index < Length && index >= 0))
             {
                 int oldLength = Length;
                 Length += list.Length;
 
                 Resize(oldLength);
-                
-                ShiftRight(index + list.Length -1, list.Length);
+
+                ShiftRight(index + list.Length - 1, list.Length);
 
                 for (int i = 0; i < list.Length; ++i)
                 {
@@ -157,18 +143,12 @@ namespace LibraryList
 
         public void RemoveFirst()
         {
-            if (!(Length == 0))
-            {
-                Length--;
-                ShiftLeft(0, 1 );
-            }
-
-            Resize(Length);
+            RemoveByIndex(indexZero, 1);
         }
 
         public void RemoveByIndex(int index)
         {
-            if (index >= 0 && index < Length)
+            if ((index == 0 && Length == 0) || (index < Length && index >= 0))
             {
                 if (!(Length == 0))
                 {
@@ -186,61 +166,61 @@ namespace LibraryList
 
         public void RemoveLast(int nElements)
         {
-            if(nElements >= 0)
+            if (nElements >= 0)
             {
 
-            if (Length >= nElements  )
-            {
-                if(nElements >= 0)
+                if (Length >= nElements)
                 {
 
-                Length -= nElements;
+                    Length -= nElements;
+
                 }
-            }
-            else
-            {
-                Length = 0;
-            }
+                else
+                {
+                    Length = 0;
+                }
 
                 Resize(Length);
-            } else
+            }
+            else
             {
                 throw new ArgumentException("Removing negative number of elements");
             }
-            
         }
 
-        public void RemoveFirst(int nElelements)
+        public void RemoveFirst(int nElements)
         {
-            if (!(Length <= nElelements))
+            RemoveByIndex(indexZero, nElements);
+        }
+
+        public void RemoveByIndex(int index, int nElements)
+        {
+            if (nElements >= 0)
             {
-                if (nElelements >= 0)
+                if ((index == 0 && Length == 0) || (index < Length && index >= 0))
                 {
-                    Length -= nElelements;
-                    ShiftLeft(0, nElelements);
+                    if (Length - index >= nElements)
+                    {
+                        Length -= nElements;
+                        ShiftLeft(index, nElements);
+                    }
+                    else
+                    {
+                        Length = 0;
+                    }
+
+                    Resize(Length);
+                }
+                else
+                {
+                    throw new IndexOutOfRangeException("Index Out Of Randge ");
                 }
             }
             else
             {
-                Length = 0;
-            }
-          
-                Resize(Length);
-        }
-
-        public void RemoveByIndex(int index, int nElelements)
-        {
-            if (Length - index >= nElelements)
-            {
-                Length -= nElelements;
-                ShiftLeft( index, nElelements);
-            }
-            else
-            {
-                Length = index;
+                throw new ArgumentException("Removing negative number of elements");
             }
 
-                Resize(Length);
         }
 
         public int GetIndexByValue(int value)
@@ -272,32 +252,46 @@ namespace LibraryList
 
         public int FindMaxIndex()
         {
-            int maxIndexOfElement = 0;
-
-            for (int i = 1; i < Length; i++)
+            if (!(Length == 0))
             {
-                if (_array[maxIndexOfElement] < _array[i])
+
+                int maxIndexOfElement = 0;
+
+                for (int i = 1; i < Length; i++)
                 {
-                    maxIndexOfElement = i;
+                    if (_array[maxIndexOfElement] < _array[i])
+                    {
+                        maxIndexOfElement = i;
+                    }
                 }
+
+                return maxIndexOfElement;
             }
 
-            return maxIndexOfElement;
+            throw new ArgumentException("empty  list");
+
         }
 
         public int FindMinIndex()
         {
-            int minIndexOfElement = 0;
-
-            for (int i = 1; i < Length; i++)
+            if (!(Length == 0))
             {
-                if (_array[minIndexOfElement] > _array[i])
+
+                int minIndexOfElement = 0;
+
+                for (int i = 1; i < Length; i++)
                 {
-                    minIndexOfElement = i;
+                    if (_array[minIndexOfElement] > _array[i])
+                    {
+                        minIndexOfElement = i;
+                    }
                 }
+
+                return minIndexOfElement;
             }
 
-            return minIndexOfElement;
+            throw new ArgumentException("empty  list");
+
         }
 
         public int FindMaxElement()
@@ -312,7 +306,15 @@ namespace LibraryList
 
         public void RemoveByValue(int value)
         {
-            RemoveByIndex(GetIndexByValue(value));
+            int index = GetIndexByValue(value);
+            if (!(index == -1))
+            {
+
+                RemoveByIndex(index);
+
+            }
+
+
         }
 
         public void RemoveAllByValue(int value)
@@ -329,7 +331,7 @@ namespace LibraryList
         {
             if ((Length >= _array.Length) || (Length <= _array.Length / 2))
             {
-              int  newLength = (int)(Length * 1.33d + 1);
+                int newLength = (int)(Length * 1.33d + 1);
                 int[] tempArray = new int[newLength];
 
                 for (int i = 0; i < oldLength; ++i)
@@ -359,7 +361,7 @@ namespace LibraryList
             }
         }
 
-    public override bool Equals(object obj)
+        public override bool Equals(object obj)
         {
             ArrayList list = (ArrayList)obj;
             if (this.Length != list.Length)
@@ -367,10 +369,11 @@ namespace LibraryList
 
                 return false;
             }
-         
+
             for (int i = 0; i < Length; i++)
             {
-                if (this._array[i] != list._array[i]) {
+                if (this._array[i] != list._array[i])
+                {
                     return false;
                 }
             }
