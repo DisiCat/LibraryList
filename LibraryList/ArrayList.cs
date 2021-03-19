@@ -24,16 +24,16 @@ namespace LibraryList
         }
 
         public ArrayList(int[] initArray)
-        { if( !(initArray == null))
+        {
+            if (!(initArray == null))
             {
+                Length = 0;
+                _array = new int[initArray.Length];
 
-            Length = 0;
-            _array = new int[initArray.Length];
-
-            for (int i = 0; i < initArray.Length; i++)
-            {
-                AddLast(initArray[i]);
-            }
+                for (int i = 0; i < initArray.Length; i++)
+                {
+                    AddLast(initArray[i]);
+                }
             }
             else
             {
@@ -43,7 +43,10 @@ namespace LibraryList
 
         public int this[int index]
         {
-            get { return _array[index]; }
+            get
+            {
+                return _array[index];
+            }
 
             set
             {
@@ -60,33 +63,81 @@ namespace LibraryList
     
         public void AddLast(int value)
         {
-                Resize();
+                Resize(Length);
 
             _array[Length++] = value;
         }
 
+        public void AddLast(ArrayList list)
+        {
+            int oldLength = Length;
+            Length += list.Length;
+
+            Resize(oldLength);
+            
+            for (int i = 0; i < list.Length; ++i)
+            {
+                _array[oldLength + i] = list[i];
+            }
+        }
+
         public void AddFirst(int value)
         {
-            Resize();
+            Resize(Length);
 
+            Length++;
             ShiftRight(0, 1);
          
             _array[0] = value;
-            Length++;
+        }
+
+        public void AddFirst(ArrayList list)
+        {
+            int oldLength = Length;
+            Length += list.Length;
+
+            Resize(oldLength);
+            
+            ShiftRight(list.Length - 1, list.Length);
+
+            for (int i = 0; i < list.Length; ++i)
+            {
+                _array[i] = list[i];
+            }
         }
 
         public void AddByIndex(int index, int value)
         {
             if (index >= 0 && index < Length)
             {
+                Resize(Length);
 
-                Resize();
-
-
-                ShiftRight(index, 1);
-                _array[index] = value;
                 Length++;
+                ShiftRight(index, 1);
 
+                _array[index] = value;
+            }
+            else
+            {
+                throw new IndexOutOfRangeException("Index Out Of Randge ");
+            }
+        }
+
+        public void AddByIndex(int index, ArrayList list)
+        {
+            if (index < Length && index >= 0)
+            {
+                int oldLength = Length;
+                Length += list.Length;
+
+                Resize(oldLength);
+                
+                ShiftRight(index + list.Length -1, list.Length);
+
+                for (int i = 0; i < list.Length; ++i)
+                {
+                    _array[i + index] = list[i];
+                }
             }
             else
             {
@@ -101,7 +152,7 @@ namespace LibraryList
                 Length--;
             }
 
-            Resize();
+            Resize(Length);
         }
 
         public void RemoveFirst()
@@ -112,7 +163,7 @@ namespace LibraryList
                 ShiftLeft(0, 1 );
             }
 
-            Resize();
+            Resize(Length);
         }
 
         public void RemoveByIndex(int index)
@@ -125,7 +176,7 @@ namespace LibraryList
                     ShiftLeft(index, 1);
                 }
 
-                Resize();
+                Resize(Length);
             }
             else
             {
@@ -133,14 +184,17 @@ namespace LibraryList
             }
         }
 
-        public void RemoveLast(int nElelements)
+        public void RemoveLast(int nElements)
         {
-            if (Length >= nElelements )
+            if(nElements >= 0)
             {
-                if(nElelements >= 0)
+
+            if (Length >= nElements  )
+            {
+                if(nElements >= 0)
                 {
 
-                Length -= nElelements;
+                Length -= nElements;
                 }
             }
             else
@@ -148,7 +202,11 @@ namespace LibraryList
                 Length = 0;
             }
 
-                Resize();
+                Resize(Length);
+            } else
+            {
+                throw new ArgumentException("Removing negative number of elements");
+            }
             
         }
 
@@ -167,7 +225,7 @@ namespace LibraryList
                 Length = 0;
             }
           
-                Resize();
+                Resize(Length);
         }
 
         public void RemoveByIndex(int index, int nElelements)
@@ -182,7 +240,7 @@ namespace LibraryList
                 Length = index;
             }
 
-                Resize();
+                Resize(Length);
         }
 
         public int GetIndexByValue(int value)
@@ -267,14 +325,14 @@ namespace LibraryList
             }
         }
 
-        private void Resize()
+        private void Resize(int oldLength)
         {
             if ((Length >= _array.Length) || (Length <= _array.Length / 2))
             {
               int  newLength = (int)(Length * 1.33d + 1);
                 int[] tempArray = new int[newLength];
 
-                for (int i = 0; i < Length; i++)
+                for (int i = 0; i < oldLength; ++i)
                 {
                     tempArray[i] = _array[i];
                 }
@@ -284,28 +342,23 @@ namespace LibraryList
         }
 
         //shift to the right ------->
-        private void ShiftRight(int index, int nElements) {
-
-            for (int i = Length - 1; i >= index; i--)
+        private void ShiftRight(int index, int nElements)
+        {
+            for (int i = Length - 1; i > index; --i)
             {
-                _array[i + nElements] = _array[i];
-
+                _array[i] = _array[i - nElements];
             }
         }
 
         // left shift    <-------
         private void ShiftLeft(int index, int nElements)
         {
-          
-            for (int i = index; i < Length; i++)
+            for (int i = index; i < Length; ++i)
             {
                 _array[i] = _array[i + nElements];
             }
-
         }
 
-
-       
     public override bool Equals(object obj)
         {
             ArrayList list = (ArrayList)obj;
