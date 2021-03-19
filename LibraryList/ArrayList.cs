@@ -10,6 +10,9 @@ namespace LibraryList
         private int[] _array;
 
         private const int indexZero = 0;
+
+        private const int shiftByOne = 1;
+
         public ArrayList()
         {
             Length = 0;
@@ -99,7 +102,7 @@ namespace LibraryList
                 Resize(Length);
                 Length++;
 
-                ShiftRight(index, 1);
+                ShiftRight(index, shiftByOne);
 
                 _array[index] = value;
             }
@@ -143,7 +146,7 @@ namespace LibraryList
 
         public void RemoveFirst()
         {
-            RemoveByIndex(indexZero, 1);
+            RemoveByIndex(indexZero, shiftByOne);
         }
 
         public void RemoveByIndex(int index)
@@ -153,7 +156,7 @@ namespace LibraryList
                 if (!(Length == 0))
                 {
                     Length--;
-                    ShiftLeft(index, 1);
+                    ShiftLeft(index, shiftByOne);
                 }
 
                 Resize(Length);
@@ -168,7 +171,6 @@ namespace LibraryList
         {
             if (nElements >= 0)
             {
-
                 if (Length >= nElements)
                 {
 
@@ -309,12 +311,8 @@ namespace LibraryList
             int index = GetIndexByValue(value);
             if (!(index == -1))
             {
-
                 RemoveByIndex(index);
-
             }
-
-
         }
 
         public void RemoveAllByValue(int value)
@@ -327,6 +325,43 @@ namespace LibraryList
             }
         }
 
+        public void SortAscendingInsert()
+        {
+            int j;
+            int temp;
+            for (int i = 1; i < Length; i++)
+            {
+                j = i;
+                temp = _array[i];
+
+                while (j > 0 && temp < _array[j - 1])
+                {
+                    _array[j] = _array[j - 1];
+                    j--;
+                }
+
+                _array[j] = temp;
+            }
+        }
+
+        public void SortDescendingInsert()
+        {
+            int j;
+            int temp;
+            for (int i = 1; i < Length; i++)
+            {
+                j = i;
+                temp = _array[i];
+
+                while (j > 0 && temp > _array[j - 1])
+                {
+                    _array[j] = _array[j - 1];
+                    j--;
+                }
+
+                _array[j] = temp;
+            }
+        }
         private void Resize(int oldLength)
         {
             if ((Length >= _array.Length) || (Length <= _array.Length / 2))
