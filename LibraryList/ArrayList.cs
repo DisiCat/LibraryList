@@ -4,7 +4,6 @@ namespace LibraryList
 {
     public class ArrayList
     {
-
         public int Length { get; private set; }
 
         private int[] _array;
@@ -208,7 +207,7 @@ namespace LibraryList
                     }
                     else
                     {
-                        Length = 0;
+                        Length = index;
                     }
 
                     Resize(Length);
@@ -224,7 +223,8 @@ namespace LibraryList
             }
 
         }
-
+        //GetIndexByValue for Maksim
+        // indexOf for Svyatoslav
         public int GetIndexByValue(int value)
         {
             for (int i = 0; i < Length; i++)
@@ -238,7 +238,7 @@ namespace LibraryList
             return -1;
         }
 
-        public void Revers()
+        public void Reverse()
         {
             int temp;
             int swapIndex;
@@ -252,11 +252,12 @@ namespace LibraryList
             }
         }
 
+        // MaxI for Svyatoslav
+        // FindMaxIndex for Maksim
         public int FindMaxIndex()
         {
             if (!(Length == 0))
             {
-
                 int maxIndexOfElement = 0;
 
                 for (int i = 1; i < Length; i++)
@@ -274,6 +275,9 @@ namespace LibraryList
 
         }
 
+
+        // MinI for Svyatoslav
+        // FindMinIndex for Maksim
         public int FindMinIndex()
         {
             if (!(Length == 0))
@@ -296,11 +300,15 @@ namespace LibraryList
 
         }
 
+        // Max for Svyatoslav
+        // FindMaxElement for Maksim
         public int FindMaxElement()
         {
             return _array[FindMaxIndex()];
         }
 
+        // Min for Svyatoslav
+        // FindMinElement for Maksim
         public int FindMinElement()
         {
             return _array[FindMinIndex()];
@@ -396,9 +404,28 @@ namespace LibraryList
             }
         }
 
+        public override string ToString()
+        {
+            if (Length != 0)
+            {
+                string s = _array[0] + " ";
+
+                for (int i = 1; i < Length; i++)
+                {
+                    s += _array[i] + " ";
+                }
+
+                return s;
+            }
+
+            return String.Empty;
+        }
+
         public override bool Equals(object obj)
         {
             ArrayList list = (ArrayList)obj;
+
+
             if (this.Length != list.Length)
             {
 
@@ -414,8 +441,11 @@ namespace LibraryList
             }
 
             return true;
+
         }
+
     }
 }
+
 
 

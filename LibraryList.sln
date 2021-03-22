@@ -5,9 +5,7 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryList", "LibraryList\LibraryList.csproj", "{EE4B1EF8-482C-45E5-97A0-9E796D8FADC3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProverkaLibrary", "ProverkaLibrary\ProverkaLibrary.csproj", "{81AB0D5C-E409-449A-B30A-9081B9614C2A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryList.Test", "LibraryList.Test\LibraryList.Test.csproj", "{83C32AC7-2A5D-43B0-985D-C4CD1BF806D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryList.Test", "LibraryList.Test\LibraryList.Test.csproj", "{83C32AC7-2A5D-43B0-985D-C4CD1BF806D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		{EE4B1EF8-482C-45E5-97A0-9E796D8FADC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE4B1EF8-482C-45E5-97A0-9E796D8FADC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE4B1EF8-482C-45E5-97A0-9E796D8FADC3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{81AB0D5C-E409-449A-B30A-9081B9614C2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81AB0D5C-E409-449A-B30A-9081B9614C2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81AB0D5C-E409-449A-B30A-9081B9614C2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{81AB0D5C-E409-449A-B30A-9081B9614C2A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{83C32AC7-2A5D-43B0-985D-C4CD1BF806D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{83C32AC7-2A5D-43B0-985D-C4CD1BF806D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83C32AC7-2A5D-43B0-985D-C4CD1BF806D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
