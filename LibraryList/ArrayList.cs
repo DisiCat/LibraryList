@@ -423,25 +423,28 @@ namespace LibraryList
 
         public override bool Equals(object obj)
         {
-            ArrayList list = (ArrayList)obj;
-
-
-            if (this.Length != list.Length)
+            if (obj is ArrayList || obj is null)
             {
-
-                return false;
-            }
-
-            for (int i = 0; i < Length; i++)
-            {
-                if (this._array[i] != list._array[i])
+                ArrayList list = (ArrayList)obj;
+             
+                if (this.Length != list.Length)
                 {
+
                     return false;
                 }
+
+                for (int i = 0; i < Length; i++)
+                {
+                    if (this._array[i] != list._array[i])
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
             }
 
-            return true;
-
+            throw new ArgumentException("obj is not arrayList!");
         }
 
     }

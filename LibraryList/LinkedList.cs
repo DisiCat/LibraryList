@@ -15,11 +15,11 @@ namespace LibraryList
         {
             get
             {
-                return GetCurrentNode(index).Value;
+                return GetNodeByIndex(index).Value;
             }
             set
             {
-                GetCurrentNode(index).Value = value;
+                GetNodeByIndex(index).Value = value;
             }
         }
 
@@ -36,21 +36,16 @@ namespace LibraryList
             _tail = _root;
         }
 
-        public LinkedList(int[] values)
+        public LinkedList(int[] values) // 1/2/3
         {
             if (!(values is null))
             {
-
-                Length = values.Length;
                 if (values.Length != 0)
                 {
-                    _root = new Node(values[0]);
-                    _tail = _root;
 
-                    for (int i = 1; i < values.Length; i++)
+                    for (int i = 0; i < values.Length; i++)
                     {
-                        _tail.Next = new Node(values[i]);
-                        _tail = _tail.Next;
+                        AddLast(values[i]);
                     }
                 }
                 else
@@ -78,11 +73,24 @@ namespace LibraryList
                 _tail = _root;
             }
 
-            Length++;
+            ++Length;
         }
-
+         
         public void AddLast(LinkedList list)
         {
+            if (!(list is null))
+            {
+                for (int i = 0; i < list.Length; i++)
+                {
+                    AddLast(list[i]);
+                }
+            }
+            else
+            {
+
+                throw new ArgumentException(" List is null");
+            }
+
         }
 
         public void AddFirst(int value)
@@ -95,6 +103,18 @@ namespace LibraryList
 
         public void AddFirst(LinkedList list)
         {
+            if (!(list is null))
+            {
+                for (int i = list.Length - 1; i >= 0; --i)
+                {
+                    AddFirst(list[i]);
+                }
+            }
+            else
+            {
+
+                throw new ArgumentException(" List is null");
+            }
         }
 
 
@@ -104,7 +124,7 @@ namespace LibraryList
             {
                 Node ByIndex = new Node(value);
 
-                Node current = GetCurrentNode(index-1);
+                Node current = GetNodeByIndex(index - 1);
 
                 ByIndex.Next = current.Next;
                 current.Next = ByIndex;
@@ -125,27 +145,38 @@ namespace LibraryList
 
         public void RemoveLast()
         {
-            if (Length != 0)
-            {
-                Node current = GetCurrentNode(Length - 2);
-             
-                current.Next = current.Next.Next;
-                _tail = current;
-                Length--;
-            }
+            RemoveByIndex(Length - 1);
         }
 
         public void RemoveFirst()
         {
-            _root = _root.Next;
+            if (Length != 0)
+            {
+                _root = _root.Next;
+                --Length;
+            }
         }
 
         public void RemoveByIndex(int index)
         {
-            Node current = GetCurrentNode(index-1);
+            if (Length != 0)
+            {
+                if (Length != 1)
+                {
 
-            current.Next = current.Next.Next;
-            Length--;
+                    Node current = GetNodeByIndex(index - 1);
+
+                    current.Next = current.Next.Next;
+                    _tail = current;
+
+                }
+                else
+                {
+                    _root = null;
+                    _tail = null;
+                }
+                --Length;
+            }
         }
 
         public void RemoveLast(int nElements)
@@ -241,52 +272,52 @@ namespace LibraryList
             {
                 Node current = _root;
                 string s = current.Value + " ";
-            
+
                 while (!(current.Next is null))
                 {
                     current = current.Next;
                     s += current.Value + " ";
                 }
-                
+
                 return s;
             }
-         
+
             return String.Empty;
         }
 
         public override bool Equals(object obj)
         {
-            LinkedList list = (LinkedList)obj;
-        
-            if(!(this.Length == list.Length && this.Length == 0))
+            if (obj is LinkedList || obj is null)
             {
+                LinkedList list = (LinkedList)obj;
+                bool isEqual = false;
 
-            if (this.Length != list.Length)
-            {
-                return false;
-            }
-
-            Node currentThis = this._root;
-            Node currentList = list._root;
-
-            do
-            {
-                if (currentThis.Value != currentList.Value)
+                if (this.Length == list.Length)
                 {
-                    return false;
+                    isEqual = true;
+                    Node currentThis = this._root;
+                    Node currentList = list._root;
+
+                    while (!(currentThis is null))
+                    {
+                        if (currentThis.Value != currentList.Value)
+                        {
+                            isEqual = false;
+                            break;
+                        }
+
+                        currentThis = currentThis.Next;
+                        currentList = currentList.Next;
+                    }
                 }
 
-                currentThis = currentThis.Next;
-                currentList = currentList.Next;
-
-            }
-            while (!(currentThis is null));
+                return isEqual;
             }
 
-            return true;
+            throw new ArgumentException("obj is not LinkedList");
         }
 
-        private Node GetCurrentNode(int index)
+        private Node GetNodeByIndex(int index)
         {
             Node current = _root;
             for (int i = 1; i <= index; i++)

@@ -44,11 +44,49 @@ namespace LibraryList.Test
 
         [TestCase(new int[] { 1, 2, 3 }, new int[] { 1, 2 })]
         [TestCase(new int[] { }, new int[] { })]
+        [TestCase(new int[] { 1 }, new int[] { })]
         public void RemoveLast_WhenMethodCalled_ThenRemoveLast(int[] actualArray, int[] expectedArray)
         {
             LinkedList actual = new LinkedList(actualArray);
 
             actual.RemoveLast();
+
+            Assert.AreEqual(new LinkedList(expectedArray), actual);
+        }
+
+        [TestCase(new int[] { 1 }, new int[] { 4, 5, 6 }, new int[] { 1, 4, 5, 6 })]
+        [TestCase(new int[] { 1, 2, 3 }, new int[] { 4, 5, 6 }, new int[] { 1, 2, 3, 4, 5, 6 })]
+        [TestCase(new int[] { }, new int[] { 1, 2, 3 }, new int[] { 1, 2, 3 })]
+        [TestCase(new int[] { 1, 2, 3 }, new int[] { }, new int[] { 1, 2, 3 })]
+        public void AddLast_WhenListPassed_ThenAddListInLast(int[] actualArray, int[] arrayForList, int[] expectedArray)
+        {
+            LinkedList actual = new LinkedList(actualArray);
+           
+            actual.AddLast(new LinkedList(arrayForList));
+             
+            Assert.AreEqual(new LinkedList(expectedArray), actual);
+        }
+
+        [TestCase(new int[] { 1, 2, 3 }, new int[] { 4, 5, 6 }, new int[] { 4, 5, 6, 1, 2, 3 })]
+        [TestCase(new int[] { 1, 2, 3 }, new int[] { }, new int[] { 1, 2, 3 })]
+        [TestCase(new int[] { }, new int[] { 1, 2, 3 }, new int[] { 1, 2, 3 })]
+        public void AddFirst_WhenListPassed_ThenAddListInFirst(int[] actualArray, int[] arrayForList, int[] expectedArray)
+        {
+            LinkedList actual = new LinkedList(actualArray);
+           
+            actual.AddFirst(new LinkedList(arrayForList));
+
+            Assert.AreEqual(new LinkedList(expectedArray), actual);
+        }
+
+        [TestCase(new int[] { 1, 2, 3 }, new int[] { 2, 3 })]
+        [TestCase(new int[] { 1 }, new int[] {  })]
+        [TestCase(new int[] { }, new int[] { })]
+        public void RemoveFirst_WhenMethodCalled_ThenRemoveFirst(int[] actualArray, int[] expectedArray)
+        {
+            LinkedList actual = new LinkedList(actualArray);
+
+            actual.RemoveFirst();
 
             Assert.AreEqual(new LinkedList(expectedArray), actual);
         }
