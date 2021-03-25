@@ -59,7 +59,6 @@ namespace LibraryList.Test
         [TestCase(new int[] { }, new int[] { 1, 2, 3 }, new int[] { 1, 2, 3 })]
         [TestCase(new int[] { 4 }, new int[] { 1, 2, 3 }, new int[] { 1, 2, 3, 4 })]
         [TestCase(new int[] { 1 }, new int[] { 0 }, new int[] { 0, 1 })]
-
         public void AddFirst_WhenListPassed_ThenAddListInFirst(int[] actualArray, int[] arrayForList, int[] expectedArray)
         {
             LinkedList actual = new LinkedList(actualArray);
@@ -188,6 +187,61 @@ namespace LibraryList.Test
                 actual.AddByIndex(index, new LinkedList(arrayForList));
             });
         }
+
+        [TestCase(new int[] { 1, 2, 3 }, 4, new int[] { })]
+[TestCase(new int[] { 1, 2, 3 }, 3, new int[] {})]
+        [TestCase(new int[] { 1, 2, 3 }, 2, new int[] {1 })]
+        [TestCase(new int[] { 1, 2, 3 }, 1, new int[] {1,2 })]
+        [TestCase(new int[] { 1, 2, 3 }, 0, new int[] { 1, 2, 3 })]
+        [TestCase(new int[] { },0, new int[] { })]
+        public void RemoveLast_WhennElementsPassed_ThenRemoveLast(int[] actualArray, int nElements, int[] expectedArray)
+        {
+            LinkedList actual = new LinkedList(actualArray);
+
+            actual.RemoveLast(nElements);
+
+            Assert.AreEqual(new LinkedList(expectedArray), actual);
+        }
+
+        [TestCase(new int[] { }, -1)]
+        public void RemoveLast_WhennListIsEmptyElementsPassed_ThenArgumentException(int[] actualArray, int nElements)
+        {
+            Assert.Throws<ArgumentException>(() =>
+            {
+                LinkedList actual = new LinkedList(actualArray);
+
+                actual.RemoveLast(nElements);
+
+            });
+        }
+
+        [TestCase(new int[] { 1, 2, 3 }, 3, new int[] { })]
+        [TestCase(new int[] { 1, 2, 3 }, 2, new int[] { 3 })]
+        [TestCase(new int[] { 1, 2, 3 }, 1, new int[] { 2, 3 })]
+        [TestCase(new int[] { 1, 2, 3 }, 0, new int[] { 1, 2, 3 })]
+        [TestCase(new int[] { 1, 2, 3 }, 4, new int[] { })]
+        [TestCase(new int[] { }, 0, new int[] { })]
+        public void RemoveFirst_WhenElementsPassed_ThenRemoveFirst(int[] actualArray, int nElements, int[] expectedArray)
+        {
+            LinkedList actual = new LinkedList(actualArray);
+
+            actual.RemoveFirst(nElements);
+
+            Assert.AreEqual(new LinkedList(expectedArray), actual);
+        }
+
+        [TestCase(new int[] { }, -1)]
+        public void RemoveFirst_WhennListIsEmptyElementsPassed_ThenArgumentException(int[] actualArray, int nElements)
+        {
+            Assert.Throws<ArgumentException>(() =>
+            {
+                LinkedList actual = new LinkedList(actualArray);
+
+                actual.RemoveFirst(nElements);
+
+            });
+        }
+
 
         [TestCase(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }, new int[] { 8, 7, 6, 5, 4, 3, 2, 1 })]
         [TestCase(new int[] { 1, 2, 3, 4, 5, 6, 7 }, new int[] { 7, 6, 5, 4, 3, 2, 1 })]

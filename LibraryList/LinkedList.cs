@@ -224,7 +224,7 @@ namespace LibraryList
                         --Length;
                     }
                 }
-               
+
             }
             else
             {
@@ -234,38 +234,52 @@ namespace LibraryList
 
         public void RemoveLast(int nElements)
         {
-            if (Length != 0)
+            if (nElements >= 0)
             {
-                if (Length - nElements >= 0)
+                if (Length != 0 && nElements !=0)
                 {
-                    Length -= nElements;
-                    _tail = GetNodeByIndex(Length - 1);
-                    _tail.Next = null;
+                    if (Length - nElements >= 0)
+                    {
+                        Length -= nElements;
+                        _tail = GetNodeByIndex(Length - 1);
+                        _tail.Next = null;
+                    }
+                    else
+                    {
+                        Length = 0;
+                        _root = null;
+                        _tail = null;
+                    }
                 }
-                else
-                {
-                    Length = 0;
-                    _root = null;
-                    _tail = null;
-                }
+            }
+            else
+            {
+                throw new ArgumentException("Wrong arguments");
             }
         }
 
         public void RemoveFirst(int nElements)
         {
-            if (Length != 0)
+            if (nElements >= 0)
             {
-                if (Length - nElements >= 0)
+                if (Length != 0 && nElements != 0)
                 {
-                    _root = GetNodeByIndex(nElements);
-                    Length -= nElements;
+                    if (Length - nElements >= 0)
+                    {
+                        _root = GetNodeByIndex(nElements);
+                        Length -= nElements;
+                    }
+                    else
+                    {
+                        Length = 0;
+                        _root = null;
+                        _tail = null;
+                    }
                 }
-                else
-                {
-                    Length = 0;
-                    _root = null;
-                    _tail = null;
-                }
+            }
+            else
+            {
+                throw new ArgumentException("Wrong arguments");
             }
 
         }
@@ -359,6 +373,7 @@ namespace LibraryList
                 Node current = _root;
                 int maxIndex = 0;
                 int maxValue = _root.Value;
+
                 for (int i = 1; i < Length; i++)
                 {
                     if (maxValue < current.Next.Value)
@@ -385,9 +400,9 @@ namespace LibraryList
                 Node current = _root;
                 int minIndex = 0;
                 int minValue = _root.Value;
+
                 for (int i = 1; i < Length; i++)
                 {
-
                     if (minValue > current.Next.Value)
                     {
                         minValue = current.Next.Value;
@@ -412,6 +427,7 @@ namespace LibraryList
             {
                 Node current = _root;
                 int maxValue = _root.Value;
+
                 for (int i = 1; i < Length; i++)
                 {
                     if (maxValue < current.Next.Value)
@@ -436,6 +452,7 @@ namespace LibraryList
             {
                 Node current = _root;
                 int minValue = _root.Value;
+
                 for (int i = 1; i < Length; i++)
                 {
                     if (minValue > current.Next.Value)
@@ -539,7 +556,7 @@ namespace LibraryList
             if (index >= 0 || index < Length)
             {
                 Node current = _root;
-             
+
                 for (int i = 1; i <= index; i++)
                 {
                     current = current.Next;
