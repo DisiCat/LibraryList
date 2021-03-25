@@ -29,6 +29,7 @@ namespace LibraryList
             _root = null;
             _tail = null;
         }
+
         public LinkedList(int value)
         {
             Length = 1;
@@ -97,6 +98,7 @@ namespace LibraryList
         {
             Length++;
             Node first = new Node(value);
+
             first.Next = _root;
             _root = first;
         }
@@ -150,7 +152,6 @@ namespace LibraryList
                 {
                     if (newList.Length != 0)
                     {
-
                         Node current = GetNodeByIndex(index - 1);
 
                         newList._tail.Next = current.Next;
@@ -339,13 +340,10 @@ namespace LibraryList
                         {
                             _tail = _tail.Next;
                         }
-                        // 1)
+
                         stepByOne.Next = _root;
-                        // 2)
                         _root = stepByOne;
-                        // 3)
                         stepByOne = stepBySecond;
-                        // 4)
                         stepBySecond = stepBySecond.Next;
                     };
                 }
@@ -363,7 +361,6 @@ namespace LibraryList
                 int maxValue = _root.Value;
                 for (int i = 1; i < Length; i++)
                 {
-
                     if (maxValue < current.Next.Value)
                     {
                         maxValue = current.Next.Value;
@@ -485,24 +482,6 @@ namespace LibraryList
 
         //public void SortDescendingInsert()
         //{
-        //}
-
-        ////shift to the right ------->
-        //private void ShiftRight(int index, int nElements)
-        //{
-        //    for (int i = Length - 1; i > index; --i)
-        //    {
-        //        _array[i] = _array[i - nElements];
-        //    }
-        //}
-
-        //// left shift    <-------
-        //private void ShiftLeft(int index, int nElements)
-        //{
-        //    for (int i = index; i < Length; ++i)
-        //    {
-        //        _array[i] = _array[i + nElements];
-        //    }
         //}
         public override string ToString()
         {

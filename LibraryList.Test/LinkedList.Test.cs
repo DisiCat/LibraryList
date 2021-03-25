@@ -139,7 +139,6 @@ namespace LibraryList.Test
             });
         }
 
-
         [TestCase(new int[] { 1, 2, 3 }, new int[] { 1, 2 })]
         [TestCase(new int[] { }, new int[] { })]
         [TestCase(new int[] { 1 }, new int[] { })]
@@ -198,7 +197,9 @@ namespace LibraryList.Test
         public void Reverse_WhenMethodCalled_ThenReverseList(int[] actualArray, int[] expectedArray)
         {
             LinkedList actual = new LinkedList(actualArray);
+
             actual.Reverse();
+
             Assert.AreEqual(new LinkedList(expectedArray), actual);
         }
 
@@ -208,6 +209,7 @@ namespace LibraryList.Test
             Assert.Throws<NullReferenceException>(() =>
             {
                 LinkedList actual = null;
+
                 actual.Reverse();
             });
         }
@@ -219,7 +221,9 @@ namespace LibraryList.Test
         public void FindMaxIndex_WhenMethodCalled_ThenReturnMaxIndex(int[] actualArray, int expected)
         {
             LinkedList list = new LinkedList(actualArray);
+
            int actual = list.FindMaxIndex();
+
             Assert.AreEqual(expected, actual);
         }
 
@@ -230,8 +234,8 @@ namespace LibraryList.Test
             Assert.Throws<ArgumentException>(() =>
             {
                 LinkedList list = new LinkedList(actualArray);
-                int actual = list.FindMaxIndex();
 
+                int actual = list.FindMaxIndex();
             });
         }
 
@@ -243,7 +247,9 @@ namespace LibraryList.Test
         public void FindMinIndex_WhenMethodCalled_ThenReturnMinIndex(int[] actualArray, int expected)
         {
             LinkedList list = new LinkedList(actualArray);
+
             int actual = list.FindMinIndex();
+
             Assert.AreEqual(expected, actual);
         }
 
@@ -254,8 +260,8 @@ namespace LibraryList.Test
             Assert.Throws<ArgumentException>(() =>
             {
                 LinkedList list = new LinkedList(actualArray);
-                int actual = list.FindMaxIndex();
 
+                int actual = list.FindMaxIndex();
             });
         }
 
@@ -264,23 +270,24 @@ namespace LibraryList.Test
         [TestCase(new int[] { 1, 2, 2 }, 2)]
         [TestCase(new int[] { 1 }, 1)]
         [TestCase(new int[] { 2, 3, 4, 6, 4, 5, 6 }, 6)]
-
         public void FindMaxElement_WhenMethodCalled_ThenReturnMaxElement(int[] actualArray, int expected)
         {
             LinkedList list = new LinkedList(actualArray);
+
             int actual = list.FindMaxElement();
+
             Assert.AreEqual(expected, actual);
         }
 
         [TestCase(new int[] { })]
         [TestCase(null)]
-        public void FindMaxElement_WhenNullOrListIsEmptyPassed_ThenReturnArgumentException(int[] actualArray)
+        public void FindMaxElement_WhenMethodCalled_ThenReturnArgumentException(int[] actualArray)
         {
             Assert.Throws<ArgumentException>(() =>
             {
                 LinkedList list = new LinkedList(actualArray);
-                int actual = list.FindMaxElement();
 
+                int actual = list.FindMaxElement();
             });
         }
 
@@ -292,7 +299,9 @@ namespace LibraryList.Test
         public void FindMinElement_WhenMethodCalled_ThenReturnMinElement(int[] actualArray, int expected)
         {
             LinkedList list = new LinkedList(actualArray);
+
             int actual = list.FindMinElement();
+
             Assert.AreEqual(expected, actual);
         }
 
@@ -303,8 +312,8 @@ namespace LibraryList.Test
             Assert.Throws<ArgumentException>(() =>
             {
                 LinkedList list = new LinkedList(actualArray);
-                int actual = list.FindMinElement();
 
+                int actual = list.FindMinElement();
             });
         }
 
