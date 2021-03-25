@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -36,14 +36,15 @@ namespace LibraryList
             _tail = _root;
         }
 
-        public LinkedList(int[] values) // 1/2/3
+        public LinkedList(int[] values)
         {
             if (!(values is null))
             {
+                Length = 0;
+
                 if (values.Length != 0)
                 {
-
-                    for (int i = 0; i < values.Length; i++)
+                    for (int i = 0; i < values.Length; ++i)
                     {
                         AddLast(values[i]);
                     }
@@ -53,6 +54,7 @@ namespace LibraryList
                     _root = null;
                     _tail = null;
                 }
+
             }
             else
             {
@@ -75,7 +77,7 @@ namespace LibraryList
 
             ++Length;
         }
-         
+
         public void AddLast(LinkedList list)
         {
             if (!(list is null))
@@ -87,10 +89,8 @@ namespace LibraryList
             }
             else
             {
-
                 throw new ArgumentException(" List is null");
             }
-
         }
 
         public void AddFirst(int value)
@@ -112,40 +112,78 @@ namespace LibraryList
             }
             else
             {
-
                 throw new ArgumentException(" List is null");
             }
         }
 
-
         public void AddByIndex(int index, int value)
         {
-            if (Length != 0)
+            if ((index == Length && Length == 0) || (index >= 0 && index < Length))
             {
-                Node ByIndex = new Node(value);
+                if (index != 0)
+                {
+                    Node ByIndex = new Node(value);
 
-                Node current = GetNodeByIndex(index - 1);
+                    Node current = GetNodeByIndex(index - 1);
 
-                ByIndex.Next = current.Next;
-                current.Next = ByIndex;
+                    ByIndex.Next = current.Next;
+                    current.Next = ByIndex;
+
+                    Length++;
+                }
+                else
+                {
+                    AddFirst(value);
+                }
             }
             else
             {
-                _root = new Node(value);
-                _tail = _root;
+                throw new IndexOutOfRangeException("Index out of range!");
             }
-
-            Length++;
         }
 
-        public void AddByIndex(int index, LinkedList list)
+        public void AddByIndex(int index, LinkedList newList)
         {
+            if ((index == Length && Length == 0) || (index >= 0 && index < Length))
+            {
+                if (index != 0)
+                {
+                    if (newList.Length != 0)
+                    {
 
+                        Node current = GetNodeByIndex(index - 1);
+
+                        newList._tail.Next = current.Next;
+                        _tail = current;
+                        int newLengthList = newList.Length + Length - index;
+                        Length = index;
+
+                        for (int i = 0; i < newLengthList; i++)
+                        {
+                            AddLast(newList[i]);
+                        }
+
+                        newList._tail.Next = null;
+
+                    }
+                }
+                else
+                {
+                    AddFirst(newList);
+                }
+            }
+            else
+            {
+                throw new IndexOutOfRangeException();
+            }
         }
 
         public void RemoveLast()
         {
-            RemoveByIndex(Length - 1);
+            if (Length != 0)
+            {
+                RemoveByIndex(Length - 1);
+            }
         }
 
         public void RemoveFirst()
@@ -159,86 +197,286 @@ namespace LibraryList
 
         public void RemoveByIndex(int index)
         {
-            if (Length != 0)
+            if ((index == Length && Length == 0) || (index >= 0 && index < Length))
             {
-                if (Length != 1)
+                if (index != 0)
                 {
+                    if (Length != 1)
+                    {
+                        Node current = GetNodeByIndex(index - 1);
 
-                    Node current = GetNodeByIndex(index - 1);
-
-                    current.Next = current.Next.Next;
-                    _tail = current;
-
+                        current.Next = current.Next.Next;
+                        _tail = current;
+                    }
+                    else
+                    {
+                        _root = null;
+                        _tail = null;
+                    }
+                    --Length;
                 }
                 else
                 {
-                    _root = null;
-                    _tail = null;
+                    if (Length != 0)
+                    {
+                        _root = _root.Next;
+                        --Length;
+                    }
                 }
-                --Length;
+               
+            }
+            else
+            {
+                throw new IndexOutOfRangeException();
             }
         }
 
         public void RemoveLast(int nElements)
         {
+            if (Length != 0)
+            {
+                if (Length - nElements >= 0)
+                {
+                    Length -= nElements;
+                    _tail = GetNodeByIndex(Length - 1);
+                    _tail.Next = null;
+                }
+                else
+                {
+                    Length = 0;
+                    _root = null;
+                    _tail = null;
+                }
+            }
         }
 
         public void RemoveFirst(int nElements)
         {
+            if (Length != 0)
+            {
+                if (Length - nElements >= 0)
+                {
+                    _root = GetNodeByIndex(nElements);
+                    Length -= nElements;
+                }
+                else
+                {
+                    Length = 0;
+                    _root = null;
+                    _tail = null;
+                }
+            }
 
         }
 
         public void RemoveByIndex(int index, int nElements)
         {
+            if ((index >= 0 && index < Length) && nElements >= 0)
+            {
+                if (Length != 0 || nElements != 0)
+                {
+                    if (index != 0)
+                    {
+                        if (Length - index - nElements > 0)
+                        {
+                            Node sectionStart = GetNodeByIndex(index - 1);
+                            Node sectionEnd = GetNodeByIndex(index + nElements);
 
+                            sectionStart.Next = sectionEnd;
+                            Length -= nElements;
+                        }
+                        else
+                        {
+                            Node sectionStart = GetNodeByIndex(index - 1);
+                            sectionStart.Next = null;
+                            _tail = sectionStart;
+                            Length = index;
+                        }
+                    }
+                    else
+                    {
+                        RemoveFirst(nElements);
+                    }
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Wrong arguments");
+            }
         }
-        ////GetIndexByValue for Maksim
-        //// indexOf for Svyatoslav
-        //public int GetIndexByValue(int value)
-        //{
-        //}
+        //GetIndexByValue for Maksim
+        // indexOf for Svyatoslav
+        public int GetIndexByValue(int value)
+        {
+            Node currentNode = _root;
 
-        //public void Reverse()
-        //{
+            for (int i = 0; i < Length; ++i)
+            {
+                if (currentNode.Value == value)
+                {
+                    return i;
+                }
 
-        //}
+                currentNode = currentNode.Next;
+            }
+
+            return -1;
+        }
+
+        public void Reverse()
+        {
+            if (!(this is null))
+            {
+                if (Length > 1)
+                {
+                    _tail.Next = _root;
+                    Node stepByOne = _root.Next;
+                    Node stepBySecond = _root.Next.Next;
+                    _root.Next = null;
+                    while (!(stepBySecond is null))
+                    {
+                        if (stepBySecond.Next is null)
+                        {
+                            _tail = _tail.Next;
+                        }
+                        // 1)
+                        stepByOne.Next = _root;
+                        // 2)
+                        _root = stepByOne;
+                        // 3)
+                        stepByOne = stepBySecond;
+                        // 4)
+                        stepBySecond = stepBySecond.Next;
+                    };
+                }
+            }
+        }
 
         //// MaxI for Svyatoslav
         //// FindMaxIndex for Maksim
-        //public int FindMaxIndex()
-        //{
-        //}
+        public int FindMaxIndex()
+        {
+            if (Length != 0 || this is null)
+            {
+                Node current = _root;
+                int maxIndex = 0;
+                int maxValue = _root.Value;
+                for (int i = 1; i < Length; i++)
+                {
 
+                    if (maxValue < current.Next.Value)
+                    {
+                        maxValue = current.Next.Value;
+                        maxIndex = i;
+                    }
+
+                    current = current.Next;
+                }
+
+                return maxIndex;
+            }
+
+            throw new ArgumentException("List is null");
+        }
 
         //// MinI for Svyatoslav
         //// FindMinIndex for Maksim
-        //public int FindMinIndex()
-        //{
-        //}
+        public int FindMinIndex()
+        {
+            if (Length != 0 || this is null)
+            {
+                Node current = _root;
+                int minIndex = 0;
+                int minValue = _root.Value;
+                for (int i = 1; i < Length; i++)
+                {
 
-        //// Max for Svyatoslav
-        //// FindMaxElement for Maksim
-        //public int FindMaxElement()
-        //{
+                    if (minValue > current.Next.Value)
+                    {
+                        minValue = current.Next.Value;
+                        minIndex = i;
+                    }
 
-        //}
+                    current = current.Next;
+                }
+
+                return minIndex;
+            }
+
+            throw new ArgumentException("List is null");
+        }
+
+
+        // Max for Svyatoslav
+        // FindMaxElement for Maksim
+        public int FindMaxElement()
+        {
+            if (Length != 0 || this is null)
+            {
+                Node current = _root;
+                int maxValue = _root.Value;
+                for (int i = 1; i < Length; i++)
+                {
+                    if (maxValue < current.Next.Value)
+                    {
+                        maxValue = current.Next.Value;
+                    }
+
+                    current = current.Next;
+                }
+
+                return maxValue;
+            }
+
+            throw new ArgumentException("List is null");
+        }
 
         //// Min for Svyatoslav
         //// FindMinElement for Maksim
-        //public int FindMinElement()
-        //{
+        public int FindMinElement()
+        {
+            if (Length != 0 || this is null)
+            {
+                Node current = _root;
+                int minValue = _root.Value;
+                for (int i = 1; i < Length; i++)
+                {
+                    if (minValue > current.Next.Value)
+                    {
+                        minValue = current.Next.Value;
+                    }
 
-        //}
+                    current = current.Next;
+                }
 
-        //public void RemoveByValue(int value)
-        //{
+                return minValue;
+            }
 
-        //}
+            throw new ArgumentException("List is null");
+        }
 
-        //public void RemoveAllByValue(int value)
-        //{
+        public void RemoveByValue(int value)
+        {
+            int index = GetIndexByValue(value);
 
-        //}
+            if (index != -1)
+            {
+                RemoveByIndex(index);
+            }
+
+        }
+
+        public void RemoveAllByValue(int value)
+        {
+            int index = GetIndexByValue(value);
+
+            while (index != -1)
+            {
+                RemoveByIndex(index);
+                index = GetIndexByValue(value);
+            }
+
+        }
 
         //public void SortAscendingInsert()
         //{
@@ -319,12 +557,19 @@ namespace LibraryList
 
         private Node GetNodeByIndex(int index)
         {
-            Node current = _root;
-            for (int i = 1; i <= index; i++)
+            if (index >= 0 || index < Length)
             {
-                current = current.Next;
+                Node current = _root;
+             
+                for (int i = 1; i <= index; i++)
+                {
+                    current = current.Next;
+                }
+
+                return current;
             }
-            return current;
+
+            throw new IndexOutOfRangeException("Index out of range");
         }
     }
 }
